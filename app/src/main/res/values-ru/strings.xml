@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Моё приложение</string>
+    <string name="city">Калуга</string>
+    <string name="temperature">+%1$d°</string>
+    <string name="weather_img">погода</string>
+    <string name="switch_dark">Тёмная тема</string>
+    <string name="button1">Настройки</string>
+    <string name="button2">Поиск города</string>
+    <string name="title_activity_setting">Настройки</string>
+    <string name="action_settings">!!!</string>
+    <string name="hello_world">Hello Round World!</string>
+    <string name="title_activity_search">searhc</string>
+    <string name="showTheWeather">Показать погоду</string>
+    <string name="pressure">Давление: %1$d</string>
+    <string name="humidity">Влажность: %1$d</string>
+
+
+</resources>
