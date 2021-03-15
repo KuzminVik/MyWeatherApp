@@ -13,9 +13,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApp">
-
-
+        android:theme="@style/ThemeMyApp">
+        <activity android:name=".MainActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".BaseActivity" />
         <!--
                Set to true if your app is Standalone, that is, it does not require the handheld
                app to run.
@@ -25,14 +26,7 @@
             android:value="true" />
 
         <activity
-            android:name=".SettingActivity"
-            android:label="@string/title_activity_setting" />
-        <activity
-            android:name=".SearchActivity"
-            android:label="@string/title_activity_search" />
-
-        <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivityOne"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyApp.NoActionBar">
             <intent-filter>
@@ -41,8 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
     </application>
 
 </manifest>

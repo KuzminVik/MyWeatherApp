@@ -1,14 +1,17 @@
 package ru.geekbrains.myapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 
-public class MainActivity extends AppCompatActivity implements OnOpenWeatherDataListener{
+public class MainActivity extends BaseActivity implements OnOpenWeatherDataListener{
+    private static final int SETTING_CODE = 88;
 
     private static final String TAG = "MainActivity";
 
@@ -19,14 +22,28 @@ public class MainActivity extends AppCompatActivity implements OnOpenWeatherData
         FragmentManager fm = getSupportFragmentManager();
         SearchFragment searchFragment = new SearchFragment();
         if(savedInstanceState==null){
+            String[] data = getResources().getStringArray(R.array.city);
+            Bundle bundle = new Bundle();
+            bundle.putStringArray(Keys.KEY, data);
+            searchFragment.setArguments(bundle);
             FragmentTransaction ft = fm.beginTransaction();
             ft.add(R.id.searchFragment, searchFragment, Keys.FRAGMENT_SEARCH);
             ft.commit();
         }
+
         if(Keys.LOG){
             Log.d(TAG, "onCreate");
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SETTING_CODE){
+            recreate();
+        }
+    }
+
 
     @Override
     protected void onStart() {

@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 public class CurrentWeatherFragment extends Fragment {
     private static final String TAG = "CurrentWeatherFragment";
+    private static final int SETTING_CODE = 88;
+
     private TextView twCity;
     private TextView twTemp;
     private TextView twPressure;
@@ -52,7 +54,8 @@ public class CurrentWeatherFragment extends Fragment {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /////
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivityForResult(intent, SETTING_CODE);
             }
         });
         b2.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Моё приложение</string>
+    <string name="app_name">Небесная канцелярия</string>
     <string name="city">Калуга</string>
     <string name="temperature">+%1$d°</string>
     <string name="weather_img">погода</string>
@@ -14,6 +14,10 @@
     <string name="showTheWeather">Показать погоду</string>
     <string name="pressure">Давление: %1$d</string>
     <string name="humidity">Влажность: %1$d</string>
+    <string name="enterTheСity">Введите название города</string>
+    <string name="EnableDarkTheme">Включить темную тему</string>
+    <string name="apply">Применить</string>
+    <string name="splashText">Небесная канцелярия</string>
 
 
 </resources>
