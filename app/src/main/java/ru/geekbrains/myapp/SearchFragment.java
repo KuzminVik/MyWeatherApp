@@ -17,13 +17,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.stream.Collectors;
+
+import javax.net.ssl.HttpsURLConnection;
+
+import ru.geekbrains.myapp.model.WeatherRequest;
 
 
 public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
+    private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
+    private static String currentCity;
+    private static final String WEATHER_API_KEY = ",ru&units=metric&appid=71fdca2d824eb807d7e97e81403a67e3";
+    private static WeatherRequest weatherRequest;
     private OnOpenWeatherDataListener myListener;
-    TextInputEditText searchCity;
-    ParcelWeather parcelWeather = new ParcelWeather("Калуга", 18, 85, 800);
+    private TextInputEditText searchCity;
+
+//    ParcelWeather parcelWeather = new ParcelWeather("Калуга", 18, 85, 800);
 
     public SearchFragment() {
     }
@@ -45,10 +62,42 @@ public class SearchFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Keys.LOG){
-                    Log.d(TAG, "onClick: мы нажали на кнопку");
+                currentCity = searchCity.getText().toString();
+                if(currentCity==null){
+                    Toast.makeText(getContext(), "currentCity is null", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                myListener.onOpenWeatherFragment(parcelWeather);
+                try {
+                    final URL uri = new URL(WEATHER_URL + currentCity + WEATHER_API_KEY);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        HttpsURLConnection urlConnection = null;
+                        try {
+                        urlConnection = (HttpsURLConnection) uri.openConnection();
+                        urlConnection.setRequestMethod("GET");
+                        urlConnection.setReadTimeout(10000);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                        String result = getLines(in);
+                        Gson gson = new Gson();
+                        weatherRequest = gson.fromJson(result, WeatherRequest.class);
+                        weatherRequest.setName(currentCity);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            if(Keys.LOG){
+                                Log.d(TAG, "Fail connection");
+                            }
+                        }finally {
+                            if (urlConnection != null) {
+                                urlConnection.disconnect();
+                            }
+                        }
+                    }
+                }).start();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                myListener.onOpenWeatherFragment(weatherRequest);
             }
         });
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Layout);
@@ -66,6 +115,10 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private String getLines(BufferedReader in) {
+        return in.lines().collect(Collectors.joining("\n"));
     }
 
     @Override

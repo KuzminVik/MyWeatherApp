@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import ru.geekbrains.myapp.model.WeatherRequest;
+
 public class CurrentWeatherFragment extends Fragment {
     private static final String TAG = "CurrentWeatherFragment";
     private static final int SETTING_CODE = 88;
@@ -25,13 +27,13 @@ public class CurrentWeatherFragment extends Fragment {
 
 
     public CurrentWeatherFragment() {
-        // Required empty public constructor
+
     }
 
-    public static CurrentWeatherFragment create (ParcelWeather parcel) {
+    public static CurrentWeatherFragment create (WeatherRequest weatherRequest) {
         CurrentWeatherFragment fragment = new CurrentWeatherFragment();
         Bundle args = new Bundle();
-        args.putParcelable(Keys.PARCEL, parcel);
+        args.putParcelable(Keys.PARCEL, weatherRequest);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,18 +71,16 @@ public class CurrentWeatherFragment extends Fragment {
         twPressure = view.findViewById(R.id.textView_pressur);
         twHumidity = view.findViewById(R.id.textView_humidity);
         if(getArguments() != null){
-            ParcelWeather parcelWeather = getArguments().getParcelable(Keys.PARCEL);
-            if(parcelWeather != null){
-                twCity.setText(parcelWeather.getCity());
-                String stringTemp = getString(R.string.temperature, parcelWeather.getTemp());
-                twTemp.setText(stringTemp);
-                String stringPressure = getString(R.string.pressure, parcelWeather.getPressure());
-                twPressure.setText(stringPressure);
-                String stringHumidity = getString(R.string.humidity, parcelWeather.getHumidity());
-                twHumidity.setText(stringHumidity);
+
+            WeatherRequest weatherRequest = getArguments().getParcelable(Keys.PARCEL);
+            if(weatherRequest != null){
+                twCity.setText(weatherRequest.getName());
+                twTemp.setText(getString(R.string.temperature, weatherRequest.getMain().getTemp()));
+                twPressure.setText(getString(R.string.pressure, weatherRequest.getMain().getPressure()));
+                twHumidity.setText(getString(R.string.humidity, weatherRequest.getMain().getHumidity()));
             }else{
                 if(Keys.LOG){
-                    Log.d(TAG, "parcelWeather is null");
+                    Log.d(TAG, "weatherRequest is null");
                 }
             }
         }else{

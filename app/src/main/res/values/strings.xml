@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Heavenly office</string>
     <string name="city">Kaluga</string>
-    <string name="temperature">+%1$d°</string>
+    <string name="temperature">%1$d°</string>
     <string name="weather_img">weather</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="button1">Settings</string>

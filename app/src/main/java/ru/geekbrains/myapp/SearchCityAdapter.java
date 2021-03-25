@@ -21,17 +21,11 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search, parent,false);
-        if(Keys.LOG){
-            Log.d(TAG, "onCreateViewHolder");
-        }
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if(Keys.LOG){
-            Log.d(TAG, "onBindViewHolder");
-        }
         holder.setData(dataSours[position]);
     }
 

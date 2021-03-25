@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Небесная канцелярия</string>
     <string name="city">Калуга</string>
-    <string name="temperature">+%1$d°</string>
+    <string name="temperature">%1$d°</string>
     <string name="weather_img">погода</string>
     <string name="switch_dark">Тёмная тема</string>
     <string name="button1">Настройки</string>

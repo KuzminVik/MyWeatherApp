@@ -29,6 +29,6 @@ public class SplashActivityOne extends AppCompatActivity {
     private void makeFullScreen() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getSupportActionBar().hide();
+        getSupportActionBar().hide();
     }
 }

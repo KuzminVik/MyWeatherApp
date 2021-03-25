@@ -5,10 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
+
+import ru.geekbrains.myapp.model.WeatherRequest;
 
 public class MainActivity extends BaseActivity implements OnOpenWeatherDataListener{
     private static final int SETTING_CODE = 88;
@@ -110,9 +113,9 @@ public class MainActivity extends BaseActivity implements OnOpenWeatherDataListe
     }
 
     @Override
-    public void onOpenWeatherFragment(ParcelWeather parcelWeather) {
-        if(parcelWeather != null){
-            CurrentWeatherFragment fr = CurrentWeatherFragment.create(parcelWeather);
+    public void onOpenWeatherFragment(WeatherRequest weatherRequest) {
+        if(weatherRequest != null){
+            CurrentWeatherFragment fr = CurrentWeatherFragment.create(weatherRequest);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.searchFragment, fr)
@@ -121,7 +124,7 @@ public class MainActivity extends BaseActivity implements OnOpenWeatherDataListe
                     .commit();
         }else{
             if(Keys.LOG){
-                Log.d(TAG, "onOpenWeatherFragment: parcelWeather is null");
+                Log.d(TAG, "onOpenWeatherFragment: weatherRequest is null");
             }
         }
 
