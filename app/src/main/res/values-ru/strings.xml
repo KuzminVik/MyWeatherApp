@@ -8,16 +8,27 @@
     <string name="button1">Настройки</string>
     <string name="button2">Поиск города</string>
     <string name="title_activity_setting">Настройки</string>
-    <string name="action_settings">!!!</string>
     <string name="hello_world">Hello Round World!</string>
     <string name="title_activity_search">searhc</string>
     <string name="showTheWeather">Показать погоду</string>
-    <string name="pressure">Давление: %1$d</string>
-    <string name="humidity">Влажность: %1$d</string>
+    <string name="pressure">Давление: %1$d мм.рт.ст</string>
+    <string name="humidity">Влажность: %1$d %%</string>
     <string name="enterTheСity">Введите название города</string>
     <string name="EnableDarkTheme">Включить темную тему</string>
     <string name="apply">Применить</string>
     <string name="splashText">Небесная канцелярия</string>
+    <string name="error_name_city_empty">Введите название города</string>
+    <string name="error_name_city">В названии города есть лишние пробелы</string>
+    <string name="error_city_not_found">Город не найден</string>
+    <string name="test">Тест</string>
+
+    <string name="action_settings">Настройки</string>
+    <string name="action_info">О программе</string>
+    <string name="action_developer">О разработчике</string>
+    <string name="text_content_info">Здесь будет немного текста про то, как программа работает, что она может. Здесь будет немного текста про то, как программа работает, что она может.
+    Здесь будет немного текста про то, как программа работает, что она может. Здесь будет немного текста про то, как программа работает, что она может.</string>
+    <string name="text_content_developer">Здесь будет немного текста про разработчика программы. Здесь будет немного текста про разработчика программы.
+    Здесь будет немного текста про разработчика программы. Здесь будет немного текста про разработчика программы.</string>
 
 
 </resources>

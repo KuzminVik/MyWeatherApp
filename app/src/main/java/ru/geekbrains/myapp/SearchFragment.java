@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,30 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import ru.geekbrains.myapp.model.WeatherRequest;
+import ru.geekbrains.myapp.model.ConnectController;
 
 
 public class SearchFragment extends Fragment {
     private static final String TAG = "SearchFragment";
-    private static final String WEATHER_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
     private static String currentCity;
-    private static final String WEATHER_API_KEY = ",ru&units=metric&appid=71fdca2d824eb807d7e97e81403a67e3";
-    private static WeatherRequest weatherRequest;
-    private OnOpenWeatherDataListener myListener;
+    private OnOpenListener myListener;
     private TextInputEditText searchCity;
-
-//    ParcelWeather parcelWeather = new ParcelWeather("Калуга", 18, 85, 800);
 
     public SearchFragment() {
     }
@@ -48,9 +36,6 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(Keys.LOG){
-            Log.d(TAG, "onCreate");
-        }
     }
 
     @Override
@@ -62,44 +47,36 @@ public class SearchFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 currentCity = searchCity.getText().toString();
-                if(currentCity==null){
-                    Toast.makeText(getContext(), "currentCity is null", Toast.LENGTH_SHORT).show();
+                if(currentCity.equals("") || currentCity.equals(" ")){
+                    Toast.makeText(getContext(), R.string.error_name_city_empty, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(!checkText(currentCity)){
+                    Toast.makeText(getContext(), R.string.error_name_city, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ConnectController connectController = new ConnectController(currentCity);
+                Thread tr = new Thread(connectController);
+                tr.start();
                 try {
-                    final URL uri = new URL(WEATHER_URL + currentCity + WEATHER_API_KEY);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        HttpsURLConnection urlConnection = null;
-                        try {
-                        urlConnection = (HttpsURLConnection) uri.openConnection();
-                        urlConnection.setRequestMethod("GET");
-                        urlConnection.setReadTimeout(10000);
-                        BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                        String result = getLines(in);
-                        Gson gson = new Gson();
-                        weatherRequest = gson.fromJson(result, WeatherRequest.class);
-                        weatherRequest.setName(currentCity);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            if(Keys.LOG){
-                                Log.d(TAG, "Fail connection");
-                            }
-                        }finally {
-                            if (urlConnection != null) {
-                                urlConnection.disconnect();
-                            }
-                        }
-                    }
-                }).start();
-                } catch (MalformedURLException e) {
+                    tr.join();
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                myListener.onOpenWeatherFragment(weatherRequest);
+                ArrayList<Parcelable> parcelables = connectController.getParcelables();
+
+                if(parcelables != null){
+                    myListener.onOpenWeatherFragment(parcelables);
+                }else{
+                    if(Keys.LOG){
+                        Log.d(TAG, "SearchFragment: parcelables is null");
+                    }
+                }
             }
         });
+
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView_Layout);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -117,18 +94,29 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private String getLines(BufferedReader in) {
-        return in.lines().collect(Collectors.joining("\n"));
-    }
-
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnOpenWeatherDataListener) {
-            myListener = (OnOpenWeatherDataListener) context;
+        if (context instanceof OnOpenListener) {
+            myListener = (OnOpenListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragment1DataListener");
         }
+    }
+
+    boolean checkText(String s){
+        int count = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if(s.charAt(i)==' ' && count==0){
+                count++;
+            }else if(s.charAt(i)!=' ' && count==1){
+                count = 0;
+            }
+            else if(s.charAt(i)==' ' && count!=0){
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -4,18 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.os.Parcelable;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
-import ru.geekbrains.myapp.model.WeatherRequest;
 
-public class MainActivity extends BaseActivity implements OnOpenWeatherDataListener{
+import java.util.ArrayList;
+
+public class MainActivity extends BaseActivity implements OnOpenListener{
     private static final int SETTING_CODE = 88;
-
     private static final String TAG = "MainActivity";
 
     @Override
@@ -40,13 +42,36 @@ public class MainActivity extends BaseActivity implements OnOpenWeatherDataListe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_settings:
+                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                        startActivity(intent);
+                return true;
+            case R.id.action_info:
+                onOpenAboutProgramFragment();
+                return true;
+            case R.id.action_developer:
+                onOpenAboutDevFragment();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SETTING_CODE){
             recreate();
         }
     }
-
 
     @Override
     protected void onStart() {
@@ -113,10 +138,14 @@ public class MainActivity extends BaseActivity implements OnOpenWeatherDataListe
     }
 
     @Override
-    public void onOpenWeatherFragment(WeatherRequest weatherRequest) {
-        if(weatherRequest != null){
-            CurrentWeatherFragment fr = CurrentWeatherFragment.create(weatherRequest);
+    public void onOpenWeatherFragment(ArrayList<Parcelable> parcelables) {
+        if(parcelables != null){
+            CurrentWeatherFragment fr = CurrentWeatherFragment.create(parcelables);
             FragmentManager fragmentManager = getSupportFragmentManager();
+//            String[] data = getResources().getStringArray(R.array.months);
+//            Bundle bundle = new Bundle();
+//            bundle.putStringArray(Keys.KEY, data);
+//            fr.setArguments(bundle);
             fragmentManager.beginTransaction()
                     .replace(R.id.searchFragment, fr)
                     .addToBackStack("name")
@@ -124,9 +153,22 @@ public class MainActivity extends BaseActivity implements OnOpenWeatherDataListe
                     .commit();
         }else{
             if(Keys.LOG){
-                Log.d(TAG, "onOpenWeatherFragment: weatherRequest is null");
+                Log.d(TAG, "MainActivity onOpenWeatherFragment: weatherRequest and weekRequest is null");
             }
         }
+    }
 
+    @Override
+    public void onOpenAboutProgramFragment(){
+        AboutProgramFragment fragment = AboutProgramFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.searchFragment,fragment).addToBackStack("name2").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
+    }
+
+    @Override
+    public void onOpenAboutDevFragment(){
+        AboutDevFragment fragment = AboutDevFragment.newInstance();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.searchFragment,fragment).addToBackStack("name3").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit();
     }
 }

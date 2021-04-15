@@ -3,8 +3,11 @@ package ru.geekbrains.myapp.model.entiti;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Main implements Parcelable {
-    private int temp;
+    private double temp;
     private double feels_like;
     private double temp_min;
     private double temp_max;
@@ -12,7 +15,7 @@ public class Main implements Parcelable {
     private int humidity;
 
     protected Main(Parcel in) {
-        temp = in.readInt();
+        temp = in.readDouble();
         feels_like = in.readDouble();
         temp_min = in.readDouble();
         temp_max = in.readDouble();
@@ -33,7 +36,7 @@ public class Main implements Parcelable {
     };
 
     public int getTemp() {
-        return temp;
+        return roundingNumber(temp);
     }
 
     public double getFeels_like() {
@@ -49,7 +52,8 @@ public class Main implements Parcelable {
     }
 
     public int getPressure() {
-        return pressure;
+        double d = pressure*0.750064;
+        return roundingNumber(d);
     }
 
     public int getHumidity() {
@@ -63,11 +67,15 @@ public class Main implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(temp);
+        dest.writeDouble(temp);
         dest.writeDouble(feels_like);
         dest.writeDouble(temp_min);
         dest.writeDouble(temp_max);
         dest.writeInt(pressure);
         dest.writeInt(humidity);
+    }
+    static int roundingNumber(double d){
+        double newDouble = new BigDecimal(d).setScale(3, RoundingMode.HALF_EVEN).doubleValue();
+        return (int)newDouble;
     }
 }

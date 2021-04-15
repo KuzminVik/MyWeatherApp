@@ -3,19 +3,22 @@ package ru.geekbrains.myapp.model.entiti;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class Wind implements Parcelable {
-    private int speed;
-    private int deg;
+    private double speed;
+    private double deg;
 
     protected Wind(Parcel in) {
-        speed = in.readInt();
-        deg = in.readInt();
+        speed = in.readDouble();
+        deg = in.readDouble();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(speed);
-        dest.writeInt(deg);
+        dest.writeDouble(speed);
+        dest.writeDouble(deg);
     }
 
     @Override
@@ -36,10 +39,15 @@ public class Wind implements Parcelable {
     };
 
     public int getSpeed() {
-        return speed;
+        return roundingNumber(speed);
     }
 
     public int getDeg() {
-        return deg;
+        return roundingNumber(deg);
+    }
+
+    static int roundingNumber(double d){
+        double newDouble = new BigDecimal(d).setScale(3, RoundingMode.HALF_EVEN).doubleValue();
+        return (int)newDouble;
     }
 }

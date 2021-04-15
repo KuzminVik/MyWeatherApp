@@ -18,4 +18,5 @@
     <dimen name="height_list">150dp</dimen>
     <dimen name="width_list">250dp</dimen>
     <dimen name="splashTextSyze">40sp</dimen>
+    <dimen name="marfin_min">8dp</dimen>
 </resources>

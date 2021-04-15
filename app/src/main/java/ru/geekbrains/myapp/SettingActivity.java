@@ -2,6 +2,8 @@ package ru.geekbrains.myapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -9,7 +11,6 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
-
 
 
 public class SettingActivity extends BaseActivity  {
@@ -47,4 +48,6 @@ public class SettingActivity extends BaseActivity  {
             recreate();
         }
     }
+
+
 }

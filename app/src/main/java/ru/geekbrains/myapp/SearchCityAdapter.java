@@ -1,6 +1,5 @@
 package ru.geekbrains.myapp;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Vi
     private static final String TAG = SearchCityAdapter.class.getSimpleName();
     private final String[] dataSours;
     private OnItemClickListener itemClickListener;
+
     public SearchCityAdapter(String[] dataSours) {
         this.dataSours = dataSours;
     }
@@ -56,7 +56,6 @@ public class SearchCityAdapter extends RecyclerView.Adapter<SearchCityAdapter.Vi
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textView = (TextView) itemView;
-
 
             // Обработчик нажатий на этом ViewHolder
             textView.setOnClickListener(new View.OnClickListener() {
